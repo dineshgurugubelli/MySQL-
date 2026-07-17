@@ -1,0 +1,172 @@
+--->HOW TO SHOW DATABASES
+-----------------------
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs4               |
+| sys                |
++--------------------+
+5 rows in set (0.05 sec)
+mysql> DESC EMPLOYEE;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| ID        | char(6)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(30) | YES  |     | NULL    |       |
+| LNAME     | varchar(30) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOB       | date        | YES  |     | NULL    |       |
+| ADDRESEE  | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.02 sec)
+
+mysql> INSERT INTO EMPLOYEE(ID,FIRSTNAME,LNAME,AGE,DOB,ADDRESEE,DEPT)VALUES('1234','DINESH','GURUGUBELLI','22','2020-07-20','DWARAKA','SALES');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> DESC TABLE EMPLOYEE;
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table    | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | EMPLOYEE | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    1 |   100.00 | NULL  |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> SELECT*FROM EMPLOYEE;
++------+-----------+-------------+------+------------+----------+-------+
+| ID   | FIRSTNAME | LNAME       | AGE  | DOB        | ADDRESEE | DEPT  |
++------+-----------+-------------+------+------------+----------+-------+
+| 1234 | DINESH    | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES |
++------+-----------+-------------+------+------------+----------+-------+
+1 row in set (0.01 sec)
+
+mysql> INSERT INTO EMPLOYEE(ID,FIRSTNAME,LNAME,AGE,DOB,ADDRESEE,DEPT)VALUES('1234','AFFU','GURUGUBELLI','22','2020-07-20','DWARAKA','IT');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM EMPLOYEE;
++------+-----------+-------------+------+------------+----------+-------+
+| ID   | FIRSTNAME | LNAME       | AGE  | DOB        | ADDRESEE | DEPT  |
++------+-----------+-------------+------+------------+----------+-------+
+| 1234 | DINESH    | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES |
+| 1234 | AFFU      | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT    |
++------+-----------+-------------+------+------------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUES('2234','MANOJ','GURU','70','2020-07-20','DWARAKA','SOFTWARE');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------+-----------+-------------+------+------------+----------+----------+
+| ID   | FIRSTNAME | LNAME       | AGE  | DOB        | ADDRESEE | DEPT     |
++------+-----------+-------------+------+------------+----------+----------+
+| 1234 | DINESH    | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES    |
+| 1234 | AFFU      | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT       |
+| 2234 | MANOJ     | GURU        |   70 | 2020-07-20 | DWARAKA  | SOFTWARE |
++------+-----------+-------------+------+------------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql>  INSERT INTO EMPLOYEE
+    -> VALUES
+    -> ('1234','SDDBHEE','DFGVHAGGV','1234','2024-06-07','HOSTEL','DERGFD'),
+    -> ('1235','SDDBHEE','DFGVHAGGV','34','2024-06-07','HOSTEL','GFD');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++------+------------+-------------+------+------------+----------+----------+
+| ID   | FIRSTNAME  | LNAME       | AGE  | DOB        | ADDRESEE | DEPT     |
++------+------------+-------------+------+------------+----------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA  | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | NULL       | NULL     | NULL     |
+| 1234 | SDDBHEE    | DFGVHAGGV   | 1234 | 2024-06-07 | HOSTEL   | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL   | GFD      |
++------+------------+-------------+------+------------+----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE SET
+    -> LNAME = 'GURUGUBELLI',
+    -> FIRSTNAME='DUDE';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------+------------+-------------+------+------------+----------+----------+
+| ID   | FIRSTNAME  | LNAME       | AGE  | DOB        | ADDRESEE | DEPT     |
++------+------------+-------------+------+------------+----------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA  | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | NULL       | NULL     | NULL     |
+| 1234 | SDDBHEE    | DFGVHAGGV   | 1234 | 2024-06-07 | HOSTEL   | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL   | GFD      |
+| NULL | DUDE       | GURUGUBELLI | NULL | NULL       | NULL     | NULL     |
++------+------------+-------------+------+------------+----------+----------+
+7 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET DEPT = 'HARDWARE' WHERE ID = '1255';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEE;
++------+------------+-------------+------+------------+----------+----------+
+| ID   | FIRSTNAME  | LNAME       | AGE  | DOB        | ADDRESEE | DEPT     |
++------+------------+-------------+------+------------+----------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA  | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | NULL       | NULL     | HARDWARE |
+| 1234 | SDDBHEE    | DFGVHAGGV   | 1234 | 2024-06-07 | HOSTEL   | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL   | GFD      |
+| NULL | DUDE       | GURUGUBELLI | NULL | NULL       | NULL     | NULL     |
++------+------------+-------------+------+------------+----------+----------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT EMPLOYEE
+    -> VALUES
+    -> ('456','DHANU','NAMADA','34','2018-07-09','FAA','TEACH');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM EMPLOYEE;;
++------+------------+-------------+------+------------+----------+----------+
+| ID   | FIRSTNAME  | LNAME       | AGE  | DOB        | ADDRESEE | DEPT     |
++------+------------+-------------+------+------------+----------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA  | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA  | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | NULL       | NULL     | HARDWARE |
+| 1234 | SDDBHEE    | DFGVHAGGV   | 1234 | 2024-06-07 | HOSTEL   | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL   | GFD      |
+| 456  | DHANU      | NAMADA      |   34 | 2018-07-09 | FAA      | TEACH    |
++------+------------+-------------+------+------------+----------+----------+
+7 rows in set (0.01 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
