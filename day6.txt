@@ -1,0 +1,329 @@
+mysql> -- DAY6.SQL
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs4               |
+| sys                |
++--------------------+
+5 rows in set (0.02 sec)
+
+mysql> SHOW TABLES;
+ERROR 1046 (3D000): No database selected
+mysql> USE PFS4;
+Database changed
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| company_staff  |
+| employee       |
++----------------+
+2 rows in set (0.01 sec)
+
+mysql> CREATE TABLE DATASTORE
+    -> (EMPID INT(5),
+    -> FNAME VARCHAR(30),
+    -> DEPT VARCHAR(10),
+    -> SALARY INT);
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> DESC TABLE DATASTROE;
+ERROR 1146 (42S02): Table 'pfs4.datastroe' doesn't exist
+mysql> DESC DATASTORE;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| EMPID  | int         | YES  |     | NULL    |       |
+| FNAME  | varchar(30) | YES  |     | NULL    |       |
+| DEPT   | varchar(10) | YES  |     | NULL    |       |
+| SALARY | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> INSERT INTO DATASTORE (
+    -> VALU;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> INSERT INTO DATASTORE VALUES
+    -> ('1','DINESH','IT',200000),
+    -> ('2','AFFU','SOFTWARE',200001);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT*FROM DATASTORE;
++-------+--------+----------+--------+
+| EMPID | FNAME  | DEPT     | SALARY |
++-------+--------+----------+--------+
+|     1 | DINESH | IT       | 200000 |
+|     2 | AFFU   | SOFTWARE | 200001 |
++-------+--------+----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| company_staff  |
+| datastore      |
+| employee       |
++----------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE BACKUPDATABASE AS SELECT* FROM DATASTORE;
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM BACKUPDATABASE;
++-------+--------+----------+--------+
+| EMPID | FNAME  | DEPT     | SALARY |
++-------+--------+----------+--------+
+|     1 | DINESH | IT       | 200000 |
+|     2 | AFFU   | SOFTWARE | 200001 |
++-------+--------+----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE BACKUPDATABASE ADD PHN INT(10) AFTER SALARY;
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> SELECT * FROM BACKUPDATABASE;
++-------+--------+----------+--------+------+
+| EMPID | FNAME  | DEPT     | SALARY | PHN  |
++-------+--------+----------+--------+------+
+|     1 | DINESH | IT       | 200000 | NULL |
+|     2 | AFFU   | SOFTWARE | 200001 | NULL |
++-------+--------+----------+--------+------+
+2 rows in set (0.00 sec)
+
+mysql> CREATE TABLE PRODUCTS(
+    -> PRODUCTID INT AUTO_INCREMENT PRIMARY KEY,
+    -> PRODUCTNAME VARCHAR(20),
+    -> PRICE DECIMAL(10,2),
+    -> QUANTITY INT,
+    -> TOTALAMOUNT DECIMAL(10,2) GENERATED ALWAY AS (PRICE*QUANTITY)STORED 
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ALWAY AS (PRICE*QUANTITY)STORED 
+)' at line 6
+mysql> CREATE TABLE PRODUCTS(
+    -> PRODUCTID INT AUTO_INCREMENT PRIMARY KEY,
+    -> PRODUCTNAME VARCHAR(20),
+    -> PRICE DECIMAL(10,2),
+    -> QUANTITY INT,
+    -> TOTALAMOUNT DECIMAL(10,2) GENERATED ALWAYS AS (PRICE*QUANTITY)STORED 
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DESC PRODUCTS;
++-------------+---------------+------+-----+---------+------------------+
+| Field       | Type          | Null | Key | Default | Extra            |
++-------------+---------------+------+-----+---------+------------------+
+| PRODUCTID   | int           | NO   | PRI | NULL    | auto_increment   |
+| PRODUCTNAME | varchar(20)   | YES  |     | NULL    |                  |
+| PRICE       | decimal(10,2) | YES  |     | NULL    |                  |
+| QUANTITY    | int           | YES  |     | NULL    |                  |
+| TOTALAMOUNT | decimal(10,2) | YES  |     | NULL    | STORED GENERATED |
++-------------+---------------+------+-----+---------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO PRODUCTS VALUES 
+    -> ('MOBILE','2345.67','2'),
+    -> ('MOBILE','2345.67','2'),
+    -> ('MOBILE','2345.67','2'),;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 4
+mysql> INSERT INTO PRODUCTS VALUES 
+    -> ('MOBILE','2345.67','2'),
+    -> ('LAPTOP','6666.66','1'),
+    -> ('TV','13333.55','1');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO PRODUCTS VALUES 
+    -> ('MOBILE',2345.67,2),
+    -> ('TV',1333.55,1),
+    -> ('LAPTOP',6666.66,1);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> ^C
+mysql> INSERT INTO PRODUCTS (PRODUCTNAME,PRICE,QUANTITY) VALUSE
+    -> ('MOBILE',2345.67,2),
+    -> ('TV',1333.55,1),
+    -> ('LAPTOP',6666.66,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VALUSE
+('MOBILE',2345.67,2),
+('TV',1333.55,1),
+('LAPTOP',6666.66,1)' at line 1
+mysql>  INSERT INTO PRODUCTS (PRODUCTNAME,PRICE,QUANTITY)
+    -> VALUSE
+    -> ('MOBILE',2345.67,2),
+    -> ('TV',1333.55,1),
+    -> ('LAPTOP',6666.66,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VALUSE
+('MOBILE',2345.67,2),
+('TV',1333.55,1),
+('LAPTOP',6666.66,1)' at line 2
+mysql> INSERT INTO PRODUCTS (PRODUCTNAME,PRICE,QUANTITY) 
+    -> VALUES
+    -> ('MOBILE',2345.67,2),
+    -> 
+    -> ('TV',1333.55,1),
+    -> ('LAPTOP',6666.66,1);
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM PRODUCTS;
++-----------+-------------+---------+----------+-------------+
+| PRODUCTID | PRODUCTNAME | PRICE   | QUANTITY | TOTALAMOUNT |
++-----------+-------------+---------+----------+-------------+
+|         1 | MOBILE      | 2345.67 |        2 |     4691.34 |
+|         2 | TV          | 1333.55 |        1 |     1333.55 |
+|         3 | LAPTOP      | 6666.66 |        1 |     6666.66 |
++-----------+-------------+---------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> DELETE FROM PRODUCTS WHERE PRODUCTID = 2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM PRODUCTS;
++-----------+-------------+---------+----------+-------------+
+| PRODUCTID | PRODUCTNAME | PRICE   | QUANTITY | TOTALAMOUNT |
++-----------+-------------+---------+----------+-------------+
+|         1 | MOBILE      | 2345.67 |        2 |     4691.34 |
+|         3 | LAPTOP      | 6666.66 |        1 |     6666.66 |
++-----------+-------------+---------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> INSERT INTO PRODUCTS VALUES 
+    -> ('5','DIGITALBOEARD','6789.21','4');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO PRODUCTS (PRODUCTNAME,PRICE,QUANTITY) VALUES 
+    -> ('DIGITALBOEARD','6789.21',6);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM PRODUCTS;
++-----------+---------------+---------+----------+-------------+
+| PRODUCTID | PRODUCTNAME   | PRICE   | QUANTITY | TOTALAMOUNT |
++-----------+---------------+---------+----------+-------------+
+|         1 | MOBILE        | 2345.67 |        2 |     4691.34 |
+|         3 | LAPTOP        | 6666.66 |        1 |     6666.66 |
+|         4 | DIGITALBOEARD | 6789.21 |        6 |    40735.26 |
++-----------+---------------+---------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE STUDENT
+    -> (STUID INT(4),
+    -> SNAME VARCHAR(25),
+    -> SMOBILE INT(10),
+    -> SMARKS INT(100)
+    -> );
+Query OK, 0 rows affected, 3 warnings (0.06 sec)
+
+mysql> DESC STUDENT;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| STUID   | int         | YES  |     | NULL    |       |
+| SNAME   | varchar(25) | YES  |     | NULL    |       |
+| SMOBILE | int         | YES  |     | NULL    |       |
+| SMARKS  | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT VALUES 
+    -> (7,'DINESH',8179542824,90);
+ERROR 1264 (22003): Out of range value for column 'SMOBILE' at row 1
+mysql> INSERT INTO STUDENT VALUES 
+    -> (7,'DINESH',8124,90);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM STUDENT;
++-------+--------+---------+--------+
+| STUID | SNAME  | SMOBILE | SMARKS |
++-------+--------+---------+--------+
+|     7 | DINESH |    8124 |     90 |
++-------+--------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO STUDENT VALUES 
+    -> (30,'AFFUSH',79424,99),
+    -> (56,'AFFRIN',19424,89),
+    -> (6,'ASHISH',99424,79);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT*FROM STUDENT;
++-------+--------+---------+--------+
+| STUID | SNAME  | SMOBILE | SMARKS |
++-------+--------+---------+--------+
+|     7 | DINESH |    8124 |     90 |
+|    30 | AFFUSH |   79424 |     99 |
+|    56 | AFFRIN |   19424 |     89 |
+|     6 | ASHISH |   99424 |     79 |
++-------+--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> CREATE USER DINESH IDENTIFIED BY 'DINU3026';
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE USER AFFU IDENTIFIED BY 'AFFU2630';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> GRANT SELECT,INSERT,UPDATE ON STUDENTS TO AFFU;
+ERROR 1146 (42S02): Table 'pfs4.STUDENTS' doesn't exist
+mysql> GRANT SELECT,INSERT,UPDATE ON STUDENT TO AFFU;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT SELECT,DELETE ON STUDENT TO DINESH;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------+------------+-------------+------+------------+-------------+----------+
+| ID   | FIRSTNAME  | LASTNAME    | AGE  | DOB        | ADDRESEE    | DEPT     |
++------+------------+-------------+------+------------+-------------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA     | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA     | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA     | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | 2019-12-12 | NULL        | HARDWARE |
+| 1234 | SDDBHEE    | DFGVHAGGV   |   22 | 2024-06-07 | HOSTEL      | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL      | GFD      |
+| 456  | DHANU      | NAMADA      |   34 | 2018-07-09 | FAA         | TEACH    |
+| 4567 | DARLING    | LADDY       |   45 | 2022-09-30 | DHEE10      | DANCE    |
+| 3434 | DUDE       | DHURAND     |   55 | 2022-02-09 | KOTTAVALAVA | SERPENCH |
++------+------------+-------------+------+------------+-------------+----------+
+9 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| backupdatabase |
+| company_staff  |
+| datastore      |
+| employee       |
+| products       |
+| student        |
++----------------+
+6 rows in set (0.03 sec)
+
+mysql> INSERT INTO EMPLOYEE VALUE ()
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEE;
++------+------------+-------------+------+------------+-------------+----------+
+| ID   | FIRSTNAME  | LASTNAME    | AGE  | DOB        | ADDRESEE    | DEPT     |
++------+------------+-------------+------+------------+-------------+----------+
+| 1234 | DINESH     | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA     | SALES    |
+| 1234 | AFFU       | GURUGUBELLI |   22 | 2020-07-20 | DWARAKA     | IT       |
+| 2234 | MANOJ      | GURU        |   70 | 2020-07-20 | DWARAKA     | SOFTWARE |
+| 1255 | NARISHIMHA | ELLI        |   12 | 2019-12-12 | NULL        | HARDWARE |
+| 1234 | SDDBHEE    | DFGVHAGGV   |   22 | 2024-06-07 | HOSTEL      | DERGFD   |
+| 1235 | SDDBHEE    | DFGVHAGGV   |   34 | 2024-06-07 | HOSTEL      | GFD      |
+| 456  | DHANU      | NAMADA      |   34 | 2018-07-09 | FAA         | TEACH    |
+| 4567 | DARLING    | LADDY       |   45 | 2022-09-30 | DHEE10      | DANCE    |
+| 3434 | DUDE       | DHURAND     |   55 | 2022-02-09 | KOTTAVALAVA | SERPENCH |
+| NULL | NULL       | NULL        | NULL | NULL       | NULL        | NULL     |
++------+------------+-------------+------+------------+-------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> Terminal close -- exit!
