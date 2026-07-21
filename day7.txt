@@ -1,0 +1,320 @@
+1. Local Transactions:
+-------------------
+In a local transaction, all operations of a transaction are executed in the same database.
+
+example:
+--------
+Funds transfer from one account to another account where both accounts belong to the same bank.
+
+2. Global Transaction:
+---------------------
+In global transaction, the operations of a transaction are executed on different databases.
+
+example:
+--------
+Funds transfer from one account to another account where both accounts belong to different banks.
+
+ACID RULES:
+>ATOMICITY(A):-ALL (OR) NOTHINNG.
+>CONSISTENCY(C) :- THE DATABASE REMAINS IN A VALID STATE.
+>ISOLATION(I) :-TRANSACTION DO NOT INTERFACE WITH EACH OTHER.
+>DURABILITY(D) :-COMMITED CHANGES ARE PERMINENT.
+mysql> -- TCL(TRUNCATE CONTROL LAANGUAGE)
+mysql> USE PFS4;
+Database changed
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| backupdatabase |
+| company_staff  |
+| datastore      |
+| employee       |
+| products       |
+| student        |
++----------------+
+6 rows in set (0.09 sec)
+
+mysql> CREATE TABLE DATA(
+    -> EMPID INT(5),
+    -> EMPNAME VARCHAR(30),
+    -> SALARY DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+mysql> DESC DATA;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| EMPID   | int           | YES  |     | NULL    |       |
+| EMPNAME | varchar(30)   | YES  |     | NULL    |       |
+| SALARY  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO DATA VALUES
+    -> ('2345','DINESH',23,456),
+    -> ('1125','AFSA',21,956);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO DATA
+    -> VALUES
+    -> ('2345','DINESH',23,456),
+    -> ('1125','AFSA',21,956);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO DATA VALUES
+    -> (2345,'DINESH',23,456);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO DATA VALUES
+    -> ('11','AFSA',21,956);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> 
+mysql> INSERT INTO DATA VALUES
+    -> (2345,'DINESH','23,456');
+ERROR 1366 (HY000): Incorrect decimal value: '23,456' for column 'SALARY' at row 1
+mysql> (2345,'DINESH',23456);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '2345,'DINESH',23456)' at line 1
+mysql> INSERT INTO DATA VALUES(12,'NAME',123456);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DATA VALUES(12,'NAME',23456);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+-----------+
+| EMPID | EMPNAME | SALARY    |
++-------+---------+-----------+
+|    12 | NAME    | 123456.00 |
+|    12 | NAME    |  23456.00 |
++-------+---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> UPDATE DATA SET EMPID = 10 WHERE SALARY = 23456;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM DATA;
++-------+---------+-----------+
+| EMPID | EMPNAME | SALARY    |
++-------+---------+-----------+
+|    12 | NAME    | 123456.00 |
+|    10 | NAME    |  23456.00 |
++-------+---------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT * FROM DATA;
+Empty set (0.00 sec)
+
+mysql> SELECT * FROM DATA;
+Empty set (0.00 sec)
+
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| backupdatabase |
+| company_staff  |
+| data           |
+| datastore      |
+| employee       |
+| products       |
+| student        |
++----------------+
+7 rows in set (0.00 sec)
+
+mysql> 
+mysql> DESC DATA;
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| EMPID   | int           | YES  |     | NULL    |       |
+| EMPNAME | varchar(30)   | YES  |     | NULL    |       |
+| SALARY  | decimal(10,2) | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT*FROM DATA;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO DATA VALUES(12,'NAME',23456);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 23456.00 |
++-------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> INSER INTO DATA VALUES
+    -> ('13','AFFU',54328),
+    -> ('14','AU',94329);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSER INTO DATA VALUES
+('13','AFFU',54328),
+('14','AU',94329)' at line 1
+mysql> INSERT INTO DATA VALUES
+    -> ('13','AFFU',54328),
+    -> ('14','AU',94329);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 23456.00 |
+|    13 | AFFU    | 54328.00 |
+|    14 | AU      | 94329.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> DELETE FROM DATA WHERE EMPID=14;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 23456.00 |
+|    13 | AFFU    | 54328.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> UPDATE DATA SET SALARY=SALARY+5000 WHERE SALARY<=25000;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 28456.00 |
+|    13 | AFFU    | 54328.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO DATA VALUES(15,'DIN'765987);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '765987)' at line 1
+mysql> INSERT INTO DATA VALUES(15,'DIN',765987);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+-----------+
+| EMPID | EMPNAME | SALARY    |
++-------+---------+-----------+
+|    12 | NAME    |  28456.00 |
+|    13 | AFFU    |  54328.00 |
+|    15 | DIN     | 765987.00 |
++-------+---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SAVEPOINT S1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+-----------+
+| EMPID | EMPNAME | SALARY    |
++-------+---------+-----------+
+|    12 | NAME    |  28456.00 |
+|    13 | AFFU    |  54328.00 |
+|    15 | DIN     | 765987.00 |
++-------+---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> DELETE FROM DATA WHERE EMPID=15;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 28456.00 |
+|    13 | AFFU    | 54328.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 28456.00 |
+|    13 | AFFU    | 54328.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO DATA VALUES
+    -> ('14','AU',94329);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM DATA;
++-------+---------+----------+
+| EMPID | EMPNAME | SALARY   |
++-------+---------+----------+
+|    12 | NAME    | 28456.00 |
+|    13 | AFFU    | 54328.00 |
+|    14 | AU      | 94329.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE DATABASE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> CREATE DATABASE DINESHPFS4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> USE DINESHPFSS4;
+ERROR 1049 (42000): Unknown database 'dineshpfss4'
+mysql> USE DINESHPFS4;
+Database changed
+mysql> CREATE TABLE DHANUSH(
+    -> EMPID INT,
+    -> EMPNAME VARCHAR(30),
+    -> DEPT VARCHAR(10),
+    -> SALARY INT(10)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> INSERT INTO DHANUSH VALUES
+    -> ('111','DINESH','IT',6547),
+    -> ('112','AFFU','IT',9549);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM DATA;
+ERROR 1146 (42S02): Table 'dineshpfs4.data' doesn't exist
+mysql> SELECT * FROM DHANUSH;
++-------+---------+------+--------+
+| EMPID | EMPNAME | DEPT | SALARY |
++-------+---------+------+--------+
+|   111 | DINESH  | IT   |   6547 |
+|   112 | AFFU    | IT   |   9549 |
++-------+---------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO DHANUSH VALUES
+    -> ('113','AFFRIN','IT',87653),
+    -> ('114','ASHISH','IT',76543);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM DHANUSH;
++-------+---------+------+--------+
+| EMPID | EMPNAME | DEPT | SALARY |
++-------+---------+------+--------+
+|   111 | DINESH  | IT   |   6547 |
+|   112 | AFFU    | IT   |   9549 |
+|   113 | AFFRIN  | IT   |  87653 |
+|   114 | ASHISH  | IT   |  76543 |
++-------+---------+------+--------+
+4 rows in set (0.00 sec)
+
+mysql> Terminal close -- exit!
