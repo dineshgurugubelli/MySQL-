@@ -1,0 +1,238 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| dineshpfs4         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs4               |
+| sys                |
++--------------------+
+6 rows in set (0.06 sec)
+
+mysql> SHOW TABLES;
+ERROR 1046 (3D000): No database selected
+mysql> USE PFS4;
+Database changed
+mysql> SHOW TABLES;
++----------------+
+| Tables_in_pfs4 |
++----------------+
+| backupdatabase |
+| company_staff  |
+| data           |
+| datastore      |
+| employee       |
+| products       |
+| student        |
++----------------+
+7 rows in set (0.01 sec)
+
+mysql> CREATE TABLE CRICKET VALUES(
+    -> ()
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(
+()' at line 1
+mysql> CREATE TABLE CRICKET(
+    -> CID VARCHAR(5),
+    -> CNAME VARCHAR(20),
+    -> CSCORE INT,
+    -> PRIMARY KEY(CID,CNAME)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DEC CRICKET;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DEC CRICKET' at line 1
+mysql> DESC CRICKET;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| CID    | varchar(5)  | NO   | PRI | NULL    |       |
+| CNAME  | varchar(20) | NO   | PRI | NULL    |       |
+| CSCORE | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> INSERT INTO CRICKET VALUES(101,"AFFU",200);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM CRICKET;
++-----+-------+--------+
+| CID | CNAME | CSCORE |
++-----+-------+--------+
+| 101 | AFFU  |    200 |
++-----+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO CRICKET VALUES(101,"DINNU",20);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM CRICKET;
++-----+-------+--------+
+| CID | CNAME | CSCORE |
++-----+-------+--------+
+| 101 | AFFU  |    200 |
+| 101 | DINNU |     20 |
++-----+-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO CRICKET VALUES(101,"AFFU",200);
+ERROR 1062 (23000): Duplicate entry '101-AFFU' for key 'cricket.PRIMARY'
+mysql> INSERT INTO CRICKET VALUES(101,"MANOJ",200);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT*FROM CRICKET;
++-----+-------+--------+
+| CID | CNAME | CSCORE |
++-----+-------+--------+
+| 101 | AFFU  |    200 |
+| 101 | DINNU |     20 |
+| 101 | MANOJ |    200 |
++-----+-------+--------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO CRICKET VALUES(102,"DINNU",20);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM CRICKET;
++-----+-------+--------+
+| CID | CNAME | CSCORE |
++-----+-------+--------+
+| 101 | AFFU  |    200 |
+| 101 | DINNU |     20 |
+| 101 | MANOJ |    200 |
+| 102 | DINNU |     20 |
++-----+-------+--------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO CRICKET VALUES(102,"DINNU",20);
+ERROR 1062 (23000): Duplicate entry '102-DINNU' for key 'cricket.PRIMARY'
+mysql> CREATE TABLE Products (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  price DECIMAL(10,2),
+    ->  qty INT
+    ->  );
+ERROR 1050 (42S01): Table 'products' already exists
+mysql> CREATE TABLE Products (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  price DECIMAL(10,2),
+    ->  qty INT
+    ->  );
+ERROR 1050 (42S01): Table 'products' already exists
+mysql> CREATE TABLE products (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  price DECIMAL(10,2),
+    ->  qty INT
+    ->  );
+ERROR 1050 (42S01): Table 'products' already exists
+mysql> CREATE TABLE ProductsPRO (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  price DECIMAL(10,2),
+    ->  qty INT
+    ->  );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Products VALUES
+    ->  (1, 'Pen', 10.00, 100),
+    ->  (2, 'Notebook', 25.00, 50),
+    ->  (3, 'Pencil', 5.00, 200),
+    ->  (4, 'Eraser', 3.00, 300),
+    ->  (5, 'Marker', 15.00, 80),
+    ->  (6, 'Scale', 20.00, 150),
+    ->  (7, 'Sharpener', 8.00, 120),
+    ->  (8, 'Geometry Box', 120.00, 40),
+    ->  (9, 'Sketch Pen', 60.00, 75),
+    ->  (10, 'Crayons', 90.00, 55);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO ProductsPRO VALUES
+    ->  (1, 'Pen', 10.00, 100),
+    ->  (2, 'Notebook', 25.00, 50),
+    ->  (3, 'Pencil', 5.00, 200),
+    ->  (4, 'Eraser', 3.00, 300),
+    ->  (5, 'Marker', 15.00, 80),
+    ->  (6, 'Scale', 20.00, 150),
+    ->  (7, 'Sharpener', 8.00, 120),
+    ->  (8, 'Geometry Box', 120.00, 40),
+    ->  (9, 'Sketch Pen', 60.00, 75),
+    ->  (10, 'Crayons', 90.00, 55);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> SELECT*FROM PRODUCTPRO;
+ERROR 1146 (42S02): Table 'pfs4.productpro' doesn't exist
+mysql> SELECT*FROM productsPRO;
++------+--------------+--------+------+
+| id   | name         | price  | qty  |
++------+--------------+--------+------+
+|    1 | Pen          |  10.00 |  100 |
+|    2 | Notebook     |  25.00 |   50 |
+|    3 | Pencil       |   5.00 |  200 |
+|    4 | Eraser       |   3.00 |  300 |
+|    5 | Marker       |  15.00 |   80 |
+|    6 | Scale        |  20.00 |  150 |
+|    7 | Sharpener    |   8.00 |  120 |
+|    8 | Geometry Box | 120.00 |   40 |
+|    9 | Sketch Pen   |  60.00 |   75 |
+|   10 | Crayons      |  90.00 |   55 |
++------+--------------+--------+------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT NAME,PRICE,PRICE+PRICE*0.12 AS TAX FROM PRODUCTSPRO;
++--------------+--------+----------+
+| NAME         | PRICE  | TAX      |
++--------------+--------+----------+
+| Pen          |  10.00 |  11.2000 |
+| Notebook     |  25.00 |  28.0000 |
+| Pencil       |   5.00 |   5.6000 |
+| Eraser       |   3.00 |   3.3600 |
+| Marker       |  15.00 |  16.8000 |
+| Scale        |  20.00 |  22.4000 |
+| Sharpener    |   8.00 |   8.9600 |
+| Geometry Box | 120.00 | 134.4000 |
+| Sketch Pen   |  60.00 |  67.2000 |
+| Crayons      |  90.00 | 100.8000 |
++--------------+--------+----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT NAME,PRICE,PRICE-5 AS DISCOUNT PRODUCTSPRO;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRODUCTSPRO' at line 1
+mysql> SELECT NAME,PRICE,PRICE-5 AS DISCOUNT  FROM PRODUCTSPRO;
++--------------+--------+----------+
+| NAME         | PRICE  | DISCOUNT |
++--------------+--------+----------+
+| Pen          |  10.00 |     5.00 |
+| Notebook     |  25.00 |    20.00 |
+| Pencil       |   5.00 |     0.00 |
+| Eraser       |   3.00 |    -2.00 |
+| Marker       |  15.00 |    10.00 |
+| Scale        |  20.00 |    15.00 |
+| Sharpener    |   8.00 |     3.00 |
+| Geometry Box | 120.00 |   115.00 |
+| Sketch Pen   |  60.00 |    55.00 |
+| Crayons      |  90.00 |    85.00 |
++--------------+--------+----------+
+10 rows in set (0.01 sec)
+
+mysql> SELECT NAME,PRICE,PRICE*10/100 AS DISCOUNT  FROM PRODUCTSPRO;
++--------------+--------+-----------+
+| NAME         | PRICE  | DISCOUNT  |
++--------------+--------+-----------+
+| Pen          |  10.00 |  1.000000 |
+| Notebook     |  25.00 |  2.500000 |
+| Pencil       |   5.00 |  0.500000 |
+| Eraser       |   3.00 |  0.300000 |
+| Marker       |  15.00 |  1.500000 |
+| Scale        |  20.00 |  2.000000 |
+| Sharpener    |   8.00 |  0.800000 |
+| Geometry Box | 120.00 | 12.000000 |
+| Sketch Pen   |  60.00 |  6.000000 |
+| Crayons      |  90.00 |  9.000000 |
++--------------+--------+-----------+
+10 rows in set (0.01 sec)
+
